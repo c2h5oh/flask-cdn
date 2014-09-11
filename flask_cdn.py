@@ -19,7 +19,7 @@ def url_for(endpoint, **values):
     """
     app = current_app
 
-    if app.debug or app.config['CDN_DEBUG']:
+    if app.config['CDN_DEBUG'] or app.debug:
         return flask_url_for(endpoint, **values)
 
     if endpoint == 'static' or endpoint.endswith('.static'):
