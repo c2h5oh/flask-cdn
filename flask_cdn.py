@@ -30,7 +30,7 @@ def url_for(endpoint, **values):
             scheme = 'https'
 
         static_folder = app.static_folder
-        if request.blueprint is not None:
+        if request.blueprint is not None and app.blueprints[request.blueprint].static_folder:
             static_folder = app.blueprints[request.blueprint].static_folder
 
         cdn_domain = app.config['CDN_DOMAIN']
