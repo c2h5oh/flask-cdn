@@ -33,13 +33,15 @@ def url_for(endpoint, **values):
         if request.blueprint is not None:
             static_folder = app.blueprints[request.blueprint].static_folder
 
-        urls = app.url_map.bind(app.config['CDN_DOMAIN'], url_scheme=scheme)
+        cdn_domain = app.config['CDN_DOMAIN']
+        urls = app.url_map.bind(cdn_domain, url_scheme=scheme)
 
         if app.config['CDN_TIMESTAMP']:
             path = os.path.join(static_folder, values['filename'])
             values['t'] = int(os.path.getmtime(path))
 
-        return urls.build(endpoint, values=values, force_external=True)
+        url = urls.build(endpoint, values=values, force_external=True)
+        return url.replace(cdn_domain.lower(), cdn_domain)
 
     return flask_url_for(endpoint, **values)
 
